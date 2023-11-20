@@ -1,27 +1,29 @@
+import { NavLink } from 'react-router-dom'
+
 const Navigation = () => {
   return (
     <aside className='sidebar col-3'>
       <h2>Administración</h2>
 
       <nav className='navegacion'>
-        <a
-          href='/'
+        <NavLink
+          to='/'
           className='clientes'
         >
           Clientes
-        </a>
-        <a
-          href='/products'
+        </NavLink>
+        <NavLink
+          to='/products'
           className='productos'
         >
           Productos
-        </a>
-        <a
-          href='/orders'
+        </NavLink>
+        <NavLink
+          to='/orders'
           className='pedidos'
         >
           Órdenes
-        </a>
+        </NavLink>
       </nav>
     </aside>
   )
