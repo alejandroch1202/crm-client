@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react'
+import { NavLink } from 'react-router-dom'
 import axiosClient from '../../config/axios'
-
-interface IClient {
-  _id: string
-  name: string
-  lastname: string
-  email: string
-  company: string
-  phone: string
-}
+import Client from '../../components/Client'
+import type { IClient } from '../../types'
 
 const Clients = () => {
   const [clients, setClients] = useState<IClient[]>([])
@@ -20,14 +14,24 @@ const Clients = () => {
 
   useEffect(() => {
     getClients()
-  }, [])
+  }, [clients])
 
   return (
     <>
       <h2>Clientes</h2>
+      <NavLink
+        to='/clients/new'
+        className='btn btn-verde nvo-cliente'
+      >
+        <i className='fas fa-plus-circle'></i>
+        Nuevo Cliente
+      </NavLink>
       <ul className='listado-clientes'>
         {clients.map((client) => (
-          <li key={client._id}>{client.name}</li>
+          <Client
+            key={client._id}
+            client={client}
+          />
         ))}
       </ul>
     </>
