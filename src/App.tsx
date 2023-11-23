@@ -2,9 +2,11 @@ import { useRoutes, BrowserRouter } from 'react-router-dom'
 import Header from './layout/Header'
 import Navigation from './layout/Navigation'
 import Clients from './pages/Clients'
-import CreateClient from './pages/CreateClient'
-import EditClient from './pages/EditClient'
+import CreateClient from './components/clients/Create'
+import EditClient from './components/clients/Edit'
 import Products from './pages/Products'
+import CreateProduct from './components/products/Create'
+import EditProduct from './components/products/Edit'
 import Orders from './pages/Orders'
 
 const AppRoutes = () => {
@@ -13,6 +15,8 @@ const AppRoutes = () => {
     { path: '/clients/new', element: <CreateClient /> },
     { path: '/clients/edit/:id', element: <EditClient /> },
     { path: '/products', element: <Products /> },
+    { path: '/products/new', element: <CreateProduct /> },
+    { path: '/products/edit/:id', element: <EditProduct /> },
     { path: '/orders', element: <Orders /> }
   ])
   return routes

@@ -1,10 +1,11 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import axiosClient from '../../config/axios'
+import axiosClient from '../../../config/axios'
 
-const CreateClient = () => {
+const EditClient = () => {
   const navigate = useNavigate()
+  const { id } = useParams()
 
   const [client, setClient] = useState({
     name: '',
@@ -13,6 +14,15 @@ const CreateClient = () => {
     company: '',
     phone: ''
   })
+
+  const getClient = async () => {
+    const client = await axiosClient.get(`/clients/${id}`)
+    setClient(client.data.client)
+  }
+
+  useEffect(() => {
+    getClient()
+  }, [])
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     setClient({ ...client, [e.currentTarget.name]: e.currentTarget.value })
@@ -37,10 +47,10 @@ const CreateClient = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await axiosClient.post('/clients', client)
+      await axiosClient.put(`/clients/${id}`, client)
       Swal.fire({
         title: 'Éxito',
-        text: 'Cliente creado correctamente',
+        text: 'Cliente actualizado correctamente',
         icon: 'success'
       })
     } catch (error) {
@@ -59,7 +69,7 @@ const CreateClient = () => {
 
   return (
     <>
-      <h2>Nuevo Cliente</h2>
+      <h2>Editar Cliente</h2>
 
       <form onSubmit={handleSubmit}>
         <legend>Llena todos los campos</legend>
@@ -70,6 +80,7 @@ const CreateClient = () => {
             type='text'
             placeholder='Nombre Cliente'
             name='name'
+            value={client.name}
             onChange={handleChange}
           />
         </div>
@@ -80,6 +91,7 @@ const CreateClient = () => {
             type='text'
             placeholder='Apellido Cliente'
             name='lastname'
+            value={client.lastname}
             onChange={handleChange}
           />
         </div>
@@ -90,6 +102,7 @@ const CreateClient = () => {
             type='email'
             placeholder='Email Cliente'
             name='email'
+            value={client.email}
             onChange={handleChange}
           />
         </div>
@@ -100,6 +113,7 @@ const CreateClient = () => {
             type='text'
             placeholder='Empresa Cliente'
             name='company'
+            value={client.company}
             onChange={handleChange}
           />
         </div>
@@ -110,6 +124,7 @@ const CreateClient = () => {
             type='number'
             placeholder='Teléfono Cliente'
             name='phone'
+            value={client.phone}
             onChange={handleChange}
           />
         </div>
@@ -118,7 +133,7 @@ const CreateClient = () => {
           <input
             type='submit'
             className='btn btn-azul'
-            value='Agregar Cliente'
+            value='Guardar cambios'
             disabled={validateForm()}
           />
         </div>
@@ -127,4 +142,4 @@ const CreateClient = () => {
   )
 }
 
-export default CreateClient
+export default EditClient

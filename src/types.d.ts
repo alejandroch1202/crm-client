@@ -6,3 +6,10 @@ export interface IClient {
   company: string
   phone: string
 }
+
+export interface IProduct {
+  _id: string
+  name: string
+  price: number
+  image: string
+}
