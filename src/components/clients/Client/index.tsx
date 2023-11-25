@@ -55,6 +55,13 @@ const Client = ({
           <i className='fas fa-pen-alt'></i>
           Editar Cliente
         </NavLink>
+        <NavLink
+          to={`/orders/new/${client._id}`}
+          className='btn btn-amarillo'
+        >
+          <i className='fas fa-plus'></i>
+          Nueva Órden
+        </NavLink>
         <button
           onClick={() => {
             handleDelete(client._id)

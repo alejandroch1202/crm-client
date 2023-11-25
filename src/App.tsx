@@ -8,6 +8,7 @@ import Products from './pages/Products'
 import CreateProduct from './components/products/Create'
 import EditProduct from './components/products/Edit'
 import Orders from './pages/Orders'
+import CreateOrder from './components/orders/Create'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -17,7 +18,8 @@ const AppRoutes = () => {
     { path: '/products', element: <Products /> },
     { path: '/products/new', element: <CreateProduct /> },
     { path: '/products/edit/:id', element: <EditProduct /> },
-    { path: '/orders', element: <Orders /> }
+    { path: '/orders', element: <Orders /> },
+    { path: '/orders/new/:id', element: <CreateOrder /> }
   ])
   return routes
 }
