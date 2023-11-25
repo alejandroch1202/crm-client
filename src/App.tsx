@@ -10,6 +10,7 @@ import EditProduct from './components/products/Edit'
 import Orders from './pages/Orders'
 import CreateOrder from './components/orders/Create'
 import EditOrder from './components/orders/Edit'
+import Login from './pages/Login'
 
 const AppRoutes = () => {
   const routes = useRoutes([
@@ -21,7 +22,8 @@ const AppRoutes = () => {
     { path: '/products/edit/:id', element: <EditProduct /> },
     { path: '/orders', element: <Orders /> },
     { path: '/orders/new/:id', element: <CreateOrder /> },
-    { path: '/orders/edit/:id', element: <EditOrder /> }
+    { path: '/orders/edit/:id', element: <EditOrder /> },
+    { path: '/auth/login', element: <Login /> }
   ])
   return routes
 }
