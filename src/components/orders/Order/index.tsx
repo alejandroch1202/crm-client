@@ -1,14 +1,4 @@
-import type { IOrder, IProduct } from '../../../types'
-
-const OrderProduct = ({ product }: { product: IProduct }) => {
-  return (
-    <li>
-      <p>{product.name}</p>
-      <p>Precio: {product.product.price}</p>
-      <p>Cantidad: {product.quantity}</p>
-    </li>
-  )
-}
+import type { IOrder } from '../../../types'
 
 const Order = ({ order }: { order: IOrder }) => {
   return (
@@ -23,14 +13,15 @@ const Order = ({ order }: { order: IOrder }) => {
           <p className='productos'>Artículos Pedido: </p>
           <ul>
             {order.products.map((product) => (
-              <OrderProduct
-                key={product._id}
-                product={product}
-              />
+              <li key={order._id + product._id}>
+                <p>{product.product.name}</p>
+                <p>Precio: {product.product.price}</p>
+                <p>Cantidad: {product.quantity}</p>
+              </li>
             ))}
           </ul>
         </div>
-        <p className='total'>Total: ${order.total} </p>
+        <p className='total'>Total: $ {order.total} </p>
       </div>
       <div className='acciones'>
         <a

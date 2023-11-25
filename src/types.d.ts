@@ -19,9 +19,15 @@ export interface IProductResult extends IProduct {
   quantity: number
 }
 
+export interface IOrderProduct {
+  _id: string
+  product: IProduct._id
+  quantity: number
+}
+
 export interface IOrder {
   _id: string
-  client: IClient
-  products: IProduct[]
+  client: IClient._id
+  products: IOrderProduct[]
   total: number
 }
