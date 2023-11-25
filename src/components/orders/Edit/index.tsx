@@ -2,22 +2,23 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axiosClient from './../../../config/axios'
-import type { IClient, IProductResult } from './../../../types'
+import type { IOrderApi, IProduct, IProductApi } from './../../../types'
 import Spinner from './../../../layout/Spinner'
 import Search from './../ProductSearch'
-import ProductAmount from './../ProductAmount'
+import EditProductAmount from './../EditProductAmount'
 
-const CreateOrder = () => {
+const EditOrder = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const [client, setClient] = useState<IClient>()
+  const [order, setOrder] = useState<IOrderApi>()
   const [searchTerm, setSearchTerm] = useState('78sa1f5s6a96ecbf1c')
-  const [products, setProducts] = useState<IProductResult[]>([])
+  const [products, setProducts] = useState<IProductApi[]>([])
   const [total, setTotal] = useState(0)
 
-  const getClient = async () => {
-    const client = await axiosClient.get(`/clients/${id}`)
-    setClient(client.data.client)
+  const getOrder = async () => {
+    const order = await axiosClient.get(`/orders/${id}`)
+    setOrder(order.data.order)
+    setProducts(order.data.order.products)
   }
 
   const searchProducts = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,14 +30,13 @@ const CreateOrder = () => {
     // Check if there are a search result
     if (product.length > 0) {
       const resultProduct = {
-        ...product[0],
-        product: product[0]._id,
+        product: product[0] as IProduct,
         quantity: 0
       }
 
       // Check if the product is already added
       const isProductAdded = products.some(
-        (product) => product.product === resultProduct.product
+        (product) => product.product._id === resultProduct.product._id
       )
       if (isProductAdded) {
         Swal.fire({
@@ -83,7 +83,7 @@ const CreateOrder = () => {
     let updatedTotal = 0
 
     products.forEach((product) => {
-      updatedTotal += product.price * product.quantity
+      updatedTotal += product.product.price * product.quantity
     })
 
     setTotal(updatedTotal)
@@ -93,15 +93,15 @@ const CreateOrder = () => {
     e.preventDefault()
 
     try {
-      const order = {
-        client: client?._id,
+      const updatedOrder = {
+        client: order?.client._id,
         products,
         total
       }
-      await axiosClient.post('/orders', order)
+      await axiosClient.put(`/orders/${order?._id}`, updatedOrder)
       Swal.fire({
         title: 'Éxito',
-        text: 'Órden creada correctamente',
+        text: 'Órden actualizada correctamente',
         icon: 'success'
       })
       navigate('/orders')
@@ -109,7 +109,7 @@ const CreateOrder = () => {
       console.log(error)
       Swal.fire({
         title: 'Error',
-        text: 'Error al crear la órden',
+        text: 'Error al actualizar la órden',
         icon: 'error'
       })
       return false // Return false to prevent the form from submitting and reloading the page.  This is important to prevent the form from submitting multiple times if the user clicks the "Add Order" button multiple times.  If you want to handle the form submission in a different way, you can remove this return statement.  You can also handle the form submission in a different way, such as by using a custom hook or by using a library like Formik or Yup.  The key point is to prevent the form from submitting multiple times.  You can also handle the form submission in a different way, such as by using a custom hook or by using a library like Formik or Yup.  The key point is to prevent the form from submitting multiple times.  You can also handle the form submission in a different way, such as by using a custom hook or by using a library like Formik or Yup.  The key point is to prevent the form from submitting multiple times.  You can also handle the form submission)
@@ -123,14 +123,14 @@ const CreateOrder = () => {
   }
 
   useEffect(() => {
-    getClient()
+    getOrder()
   }, [])
 
   useEffect(() => {
     updateTotal()
   }, [products])
 
-  if (client === undefined) return <Spinner />
+  if (order === undefined || products === undefined) return <Spinner />
 
   return (
     <>
@@ -139,10 +139,10 @@ const CreateOrder = () => {
       <div className='ficha-cliente'>
         <h3>Datos de Cliente</h3>
         <p>
-          <b>Nombre:</b> {client.name} {client.lastname}
+          <b>Nombre:</b> {order.client.name} {order.client.lastname}
         </p>
         <p>
-          <b>Teléfono:</b> {client.phone}
+          <b>Teléfono:</b> {order.client.phone}
         </p>
       </div>
 
@@ -153,8 +153,8 @@ const CreateOrder = () => {
 
       <ul className='resumen'>
         {products.map((product, index) => (
-          <ProductAmount
-            key={product._id}
+          <EditProductAmount
+            key={product.product._id}
             product={product}
             index={index}
             decreaseQuantity={decreaseQuantity}
@@ -165,14 +165,14 @@ const CreateOrder = () => {
       </ul>
 
       <p className='total'>
-        Total: <span>$ {total}</span>
+        Total: <span>$ {total} </span>
       </p>
 
-      {total === 0 ? null : (
+      {total === 0 || isNaN(total) ? null : (
         <form onClick={handleSubmit}>
           <input
             className='btn btn-verde btn-block'
-            value='Agregar Órder'
+            value='Guardar cambios'
             type='submit'
           />
         </form>
@@ -181,4 +181,4 @@ const CreateOrder = () => {
   )
 }
 
-export default CreateOrder
+export default EditOrder

@@ -6,6 +6,7 @@ import type { IOrder } from '../../types'
 
 const Orders = () => {
   const [orders, setOrders] = useState<IOrder[]>([])
+  const [refresh, setRefresh] = useState(false)
 
   const getOrders = async () => {
     const orders = await axiosClient.get('/orders')
@@ -14,19 +15,20 @@ const Orders = () => {
 
   useEffect(() => {
     getOrders()
-  }, [])
+  }, [refresh])
 
   if (orders.length === 0) return <Spinner />
 
   return (
     <>
-      <h2>Pedidos</h2>
+      <h2>Órdenes</h2>
 
       <ul className='listado-pedidos'>
         {orders.map((order) => (
           <Order
             key={order._id}
             order={order}
+            setRefresh={setRefresh}
           />
         ))}
       </ul>
