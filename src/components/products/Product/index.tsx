@@ -3,6 +3,8 @@ import Swal from 'sweetalert2'
 import axiosClient from './../../../config/axios'
 import type { IProduct } from './../../../types'
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const Product = ({
   product,
   setRefresh
@@ -46,7 +48,7 @@ const Product = ({
         <p className='nombre'>{product.name}</p>
         <p className='precio'>$ {product.price} </p>
         <img
-          src={`http://localhost:4000/${product.image}`}
+          src={`${BACKEND_URL}/${product.image}`}
           alt={`imagen $${product.name}`}
         />
       </div>

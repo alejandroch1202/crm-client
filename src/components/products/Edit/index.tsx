@@ -4,6 +4,8 @@ import Swal from 'sweetalert2'
 import axiosClient from '../../../config/axios'
 import Spinner from '../../../layout/Spinner'
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
+
 const EditProduct = () => {
   const navigate = useNavigate()
   const { id } = useParams()
@@ -119,7 +121,7 @@ const EditProduct = () => {
           <label>Imagen:</label>
           {image === undefined ? (
             <img
-              src={`http://localhost:4000/${product.image}`}
+              src={`${BACKEND_URL}/${product.image}`}
               alt={`Imagen de ${product.name}`}
               width={'300px'}
             />
