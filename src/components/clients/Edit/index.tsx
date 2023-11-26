@@ -16,7 +16,9 @@ const EditClient = () => {
   })
 
   const getClient = async () => {
-    const client = await axiosClient.get(`/clients/${id}`)
+    const client = await axiosClient.get(`/clients/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     setClient(client.data.client)
   }
 
@@ -47,7 +49,9 @@ const EditClient = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await axiosClient.put(`/clients/${id}`, client)
+      await axiosClient.put(`/clients/${id}`, client, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       Swal.fire({
         title: 'Éxito',
         text: 'Cliente actualizado correctamente',

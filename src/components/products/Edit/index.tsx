@@ -17,7 +17,9 @@ const EditProduct = () => {
   const [image, setImage] = useState<File>()
 
   const getproduct = async () => {
-    const product = await axiosClient.get(`/products/${id}`)
+    const product = await axiosClient.get(`/products/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     setProduct(product.data.product)
   }
 
@@ -61,7 +63,8 @@ const EditProduct = () => {
     try {
       await axiosClient.put(`/products/${id}`, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
       Swal.fire({

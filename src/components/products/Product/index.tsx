@@ -22,13 +22,19 @@ const Product = ({
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosClient.delete(`/products/${id}`).then(() => {
-          Swal.fire({
-            title: 'Eliminado',
-            text: 'Producto eliminado correctamente',
-            icon: 'success'
+        axiosClient
+          .delete(`/products/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
           })
-        })
+          .then(() => {
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'Producto eliminado correctamente',
+              icon: 'success'
+            })
+          })
         setRefresh(true)
       }
     })

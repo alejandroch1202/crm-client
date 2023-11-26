@@ -37,7 +37,9 @@ const CreateClient = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      await axiosClient.post('/clients', client)
+      await axiosClient.post('/clients', client, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       Swal.fire({
         title: 'Éxito',
         text: 'Cliente creado correctamente',

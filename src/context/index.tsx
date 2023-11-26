@@ -10,10 +10,12 @@ interface IAppContext {
   setAuth: React.Dispatch<React.SetStateAction<IAuth>>
 }
 
+const token = localStorage.getItem('token')
+
 const initialState = {
   auth: {
-    token: '',
-    auth: false
+    token: token ?? '',
+    auth: token !== ''
   },
   setAuth: () => {}
 }
@@ -22,8 +24,8 @@ const AppContext = createContext<IAppContext>(initialState)
 
 const AppProvider = ({ children }: { children: JSX.Element }) => {
   const [auth, setAuth] = useState({
-    token: '',
-    auth: false
+    token: token ?? '',
+    auth: token !== ''
   })
 
   const globalState = {

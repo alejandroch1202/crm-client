@@ -16,14 +16,18 @@ const CreateOrder = () => {
   const [total, setTotal] = useState(0)
 
   const getClient = async () => {
-    const client = await axiosClient.get(`/clients/${id}`)
+    const client = await axiosClient.get(`/clients/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     setClient(client.data.client)
   }
 
   const searchProducts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const product = await axiosClient
-      .get(`/products?search=${searchTerm}`)
+      .get(`/products?search=${searchTerm}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       .then((result) => result.data.products)
 
     // Check if there are a search result
@@ -98,7 +102,9 @@ const CreateOrder = () => {
         products,
         total
       }
-      await axiosClient.post('/orders', order)
+      await axiosClient.post('/orders', order, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       Swal.fire({
         title: 'Éxito',
         text: 'Órden creada correctamente',

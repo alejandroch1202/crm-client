@@ -44,7 +44,8 @@ const CreateProduct = () => {
     try {
       await axiosClient.post('/products', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         }
       })
       Swal.fire({

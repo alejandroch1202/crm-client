@@ -22,13 +22,19 @@ const Client = ({
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosClient.delete(`/clients/${id}`).then(() => {
-          Swal.fire({
-            title: 'Eliminado',
-            text: 'Cliente eliminado correctamente',
-            icon: 'success'
+        axiosClient
+          .delete(`/clients/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
           })
-        })
+          .then(() => {
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'Cliente eliminado correctamente',
+              icon: 'success'
+            })
+          })
       }
       setRefresh(true)
     })

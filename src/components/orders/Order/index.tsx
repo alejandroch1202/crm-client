@@ -22,13 +22,19 @@ const Order = ({
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosClient.delete(`/orders/${id}`).then(() => {
-          Swal.fire({
-            title: 'Eliminado',
-            text: 'Órden eliminada correctamente',
-            icon: 'success'
+        axiosClient
+          .delete(`/orders/${id}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
           })
-        })
+          .then(() => {
+            Swal.fire({
+              title: 'Eliminado',
+              text: 'Órden eliminada correctamente',
+              icon: 'success'
+            })
+          })
       }
       setRefresh(true)
     })

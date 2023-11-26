@@ -16,7 +16,9 @@ const EditOrder = () => {
   const [total, setTotal] = useState(0)
 
   const getOrder = async () => {
-    const order = await axiosClient.get(`/orders/${id}`)
+    const order = await axiosClient.get(`/orders/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
     setOrder(order.data.order)
     setProducts(order.data.order.products)
   }
@@ -24,7 +26,9 @@ const EditOrder = () => {
   const searchProducts = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const product = await axiosClient
-      .get(`/products?search=${searchTerm}`)
+      .get(`/products?search=${searchTerm}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       .then((result) => result.data.products)
 
     // Check if there are a search result
@@ -98,7 +102,9 @@ const EditOrder = () => {
         products,
         total
       }
-      await axiosClient.put(`/orders/${order?._id}`, updatedOrder)
+      await axiosClient.put(`/orders/${order?._id}`, updatedOrder, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
       Swal.fire({
         title: 'Éxito',
         text: 'Órden actualizada correctamente',
