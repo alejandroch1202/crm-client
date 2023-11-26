@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../../context'
 import axiosClient from '../../config/axios'
 import Swal from 'sweetalert2'
 
 const Login = () => {
+  const { setAuth } = useContext(AppContext)
   const navigate = useNavigate()
 
   const [credentials, setCredentials] = useState({
@@ -26,6 +28,7 @@ const Login = () => {
       axiosClient.defaults.headers.common.authorization = `Basic ${encode}`
       const token = await axiosClient.post('/auth/login')
       localStorage.setItem('token', token.data.token)
+      setAuth({ token: token.data.token, auth: true })
 
       Swal.fire({
         title: 'Éxito',

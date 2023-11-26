@@ -1,21 +1,35 @@
-import { useState, useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useState, useEffect, useContext } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { AppContext } from '../../context'
 import axiosClient from './../../config/axios'
 import type { IProduct } from './../../types'
 import Product from './../../components/products/Product'
 import Spinner from './../../layout/Spinner'
 
 const Products = () => {
+  const { auth } = useContext(AppContext)
+  const navigate = useNavigate()
   const [products, setProducts] = useState<IProduct[]>([])
   const [refresh, setRefresh] = useState(false)
 
   const getProducts = async () => {
-    const products = await axiosClient.get('/products')
+    const products = await axiosClient.get('/products', {
+      headers: { Authorization: `Bearer ${auth.token}` }
+    })
     setProducts(products.data.products)
   }
 
   useEffect(() => {
-    getProducts()
+    if (auth.token !== '') {
+      try {
+        getProducts()
+      } catch (error) {
+        console.log(error)
+        navigate('/auth/login')
+      }
+    } else {
+      navigate('/auth/login')
+    }
   }, [refresh])
 
   if (products.length === 0) return <Spinner />
