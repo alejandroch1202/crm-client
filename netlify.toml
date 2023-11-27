@@ -3,21 +3,3 @@
   to = "/index.html"
   status = 200
   force = false
-
-[[redirects]]
-  from = "/clients/*"
-  to = "/index.html"
-  status = 200
-  force = false
-  
-[[redirects]]
-  from = "/products/*"
-  to = "/index.html"
-  status = 200
-  force = false
-
-[[redirects]]
-  from = "/orders/*"
-  to = "/index.html"
-  status = 200
-  force = false
